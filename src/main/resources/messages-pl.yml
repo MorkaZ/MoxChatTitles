@@ -1,0 +1,20 @@
+misc:
+  prefix: "&e&l[&9&lChat&b&lTitles&e&l] "
+  separator: "&8------&7-----&f----&9*&b&l*&9*&f----&7-----&8------"
+
+errors:
+  bad-command-usage: "&cKomenda została źle użyta, poprawne użycie: %command%"
+  nick-too-long: "&cNazwa gracza jest zbyt długa (max 16 znaków)."
+  title-not-exist: "&cTen tytuł nie istnieje w configu."
+  no-titles-defined: "&cNie zostały skonfigurowane żadne tytuły! Sprawdź konfigurację!"
+  no-titles-on-page: "&cNa podanej stronie (&3%page%&c) nie znaleziono żadnych tytułów. Ostatni możliwy do wyświetlenia numer strony to: &3%max-page%&c."
+
+usage-outputs:
+  title-set: "&bTytuł dla gracza &3%player% &bzostał ustawiony na tytuł o nazwie: &3%title%&b."
+  title-removed: "&bTytuł u gracza &3%player% &bzostał usunięty!"
+  title-list: "&3&lLISTA TYTUŁÓW"
+  player-info: "&3&lINFORMACJE O &b&l%player%&3&l"
+  actual-page: "&bAktualna strona: &3%page%&b."
+  plugin-reloaded: "&bPlugin został zreloadowany!"
+  last-title: "&9Ostatni tytuł"
+  none: "&cBrak"

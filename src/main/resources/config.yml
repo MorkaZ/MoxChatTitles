@@ -1,0 +1,22 @@
+titles:
+  example: "&e[&7Example&eTitle&e] "
+
+purger:
+  enabled: true
+  max-not-online-days: 90
+
+default-title:
+  enabled: true
+  title-index: "example"
+
+database:
+  type: "sqlite"
+  settings:
+    sqlite:
+      file-location: "%plugin-folder%/database.db"
+    mysql:
+      host: "localhost"
+      port: "3306"
+      database: "Mox_TokenShop"
+      user: "root"
+      password: "password"
