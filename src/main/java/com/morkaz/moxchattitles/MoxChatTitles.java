@@ -2,8 +2,6 @@ package com.morkaz.moxchattitles;
 
 import com.morkaz.moxchattitles.commands.ChatTitleCmd;
 import com.morkaz.moxchattitles.configuration.ConfigManager;
-import com.morkaz.moxchattitles.data.ChatTitle;
-import com.morkaz.moxchattitles.data.PlayerData;
 import com.morkaz.moxchattitles.listeners.ChatListener;
 import com.morkaz.moxchattitles.listeners.JoinListener;
 import com.morkaz.moxchattitles.listeners.QuitListener;
@@ -13,9 +11,12 @@ import com.morkaz.moxlibrary.api.ServerUtils;
 import com.morkaz.moxlibrary.database.sql.SQLDatabase;
 import com.morkaz.moxlibrary.database.sql.mysql.MySQLDatabase;
 import com.morkaz.moxlibrary.database.sql.sqlite.SQLiteDatabase;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import org.bstats.bukkit.Metrics;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -41,6 +42,9 @@ public class MoxChatTitles extends JavaPlugin {
 	public void onEnable(){
 		//Set Instance
 		main = this;
+
+		//Add Metrics
+		Metrics metrics = new Metrics(this);
 
 		//Initialize Managers
 		configManager = new ConfigManager(this);

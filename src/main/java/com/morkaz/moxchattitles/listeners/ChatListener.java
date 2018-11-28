@@ -18,13 +18,18 @@ public class ChatListener implements Listener {
 		main.getServer().getPluginManager().registerEvents(this, main);
 	}
 
-	@EventHandler(priority= EventPriority.HIGHEST)
-	public void onChat(AsyncPlayerChatEvent e){
+	@EventHandler(priority= EventPriority.LOWEST)
+	public void onChat(AsyncPlayerChatEvent e) {
 		String playerID = Bukkit.getOnlineMode() ? e.getPlayer().getUniqueId().toString() : e.getPlayer().getName().toLowerCase();
 		PlayerData playerData = main.getDataManager().getPlayerData(playerID);
 		ChatTitle chatTitle = playerData.getLastTitle();
-		if (chatTitle != null){
-			e.setFormat(chatTitle.getTitle()+e.getFormat());
+		String chatFormat = e.getFormat();
+		if (chatTitle != null) {
+			if (chatFormat.contains("%moxtitle%")) {
+				e.setFormat(chatFormat.replace("%moxtitle%", chatTitle.getTitle()));
+			} else {
+				e.setFormat(chatTitle.getTitle() + e.getFormat());
+			}
 		}
 	}
 }
