@@ -1,0 +1,8 @@
+name: MoxChatTitles
+author: Morkazoid
+version: 0.1
+depend: []
+softdepend: []
+description: "Morkazoids premium chat prefixes (titles) plugin. Created for GC2.PL Network"
+main: com.morkaz.moxchattitles.MoxChatTitles
+api-version: 1.13

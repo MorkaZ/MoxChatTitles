@@ -20,6 +20,7 @@ public class DataManager{
 	public Map<String, ChatTitle> titlesMap = new HashMap<>();
 	//			ID		Data
 	public Map<String, PlayerData> playerDataMap = new HashMap<>();
+	public ChatTitle defaultTitle;
 
 	public DataManager(MoxChatTitles main) {
 		this.main = main;
@@ -73,6 +74,7 @@ public class DataManager{
 				continue;
 			}
 		}
+		this.defaultTitle = this.getTitle(main.getConfig().getString("default-title.title-name"));
 		Bukkit.getLogger().info("["+main.getDescription().getName()+"] Chat titles loaded!");
 	}
 
@@ -152,4 +154,7 @@ public class DataManager{
 		}
 	}
 
+	public ChatTitle getDefaultTitle() {
+		return defaultTitle;
+	}
 }

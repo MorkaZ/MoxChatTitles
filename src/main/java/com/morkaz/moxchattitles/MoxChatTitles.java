@@ -6,6 +6,7 @@ import com.morkaz.moxchattitles.listeners.ChatListener;
 import com.morkaz.moxchattitles.listeners.JoinListener;
 import com.morkaz.moxchattitles.listeners.QuitListener;
 import com.morkaz.moxchattitles.managers.DataManager;
+import com.morkaz.moxchattitles.misc.Metrics;
 import com.morkaz.moxlibrary.api.QueryUtils;
 import com.morkaz.moxlibrary.api.ServerUtils;
 import com.morkaz.moxlibrary.database.sql.SQLDatabase;
@@ -13,10 +14,9 @@ import com.morkaz.moxlibrary.database.sql.mysql.MySQLDatabase;
 import com.morkaz.moxlibrary.database.sql.sqlite.SQLiteDatabase;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.bstats.bukkit.Metrics;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -46,12 +46,8 @@ public class MoxChatTitles extends JavaPlugin {
 		//Add Metrics
 		Metrics metrics = new Metrics(this);
 
-		//Initialize Managers
+		//Initialize configuration
 		configManager = new ConfigManager(this);
-		dataManager = new DataManager(this);
-
-		//Define plugin prefix
-		this.prefix = configManager.getMessagesConfig().getString("misc.prefix");
 
 		//Database setup
 		if (getConfig().getString("database.type").equalsIgnoreCase("mysql")){
@@ -81,16 +77,23 @@ public class MoxChatTitles extends JavaPlugin {
 		);
 		database.updateSync(newTableQuery);
 
+		//Initialize Managers
+		dataManager = new DataManager(this);
+
+		//Define plugin prefix
+		this.prefix = configManager.getMessagesConfig().getString("misc.prefix");
+
 		//Register chattitle command
-		ChatTitleCmd chatTitleCmd = new ChatTitleCmd(this);
-		ServerUtils.registerCommand(
+		ChatTitleCmd chatTitleExecutor = new ChatTitleCmd(this);
+		PluginCommand chatTitleCommand = ServerUtils.registerCommand(
 				this,
 				"chattitle",
 				Arrays.asList("cht"),
 				"Main command of MoxChatTitles plugin.",
 				"/cht <args..>",
-				chatTitleCmd
+				chatTitleExecutor
 		);
+		chatTitleCommand.setTabCompleter(chatTitleExecutor);
 
 		//Register listeners
 		new JoinListener(this);

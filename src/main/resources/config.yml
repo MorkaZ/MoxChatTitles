@@ -1,5 +1,9 @@
+locale: "pl"
+
 titles:
-  example: "&e[&7Example&eTitle&e] "
+  example:
+    title: "&e&o[&7Example&8Title&e&o] &r"
+    permission: "example.permission"
 
 purger:
   enabled: true
@@ -7,7 +11,7 @@ purger:
 
 default-title:
   enabled: true
-  title-index: "example"
+  title-name: "example"
 
 database:
   type: "sqlite"

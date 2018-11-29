@@ -9,13 +9,14 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class ChatTitleCmd implements CommandExecutor {
+public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 
 	private MoxChatTitles main;
 
@@ -39,11 +40,7 @@ public class ChatTitleCmd implements CommandExecutor {
 		if (args.size() == 1){
 			completeList.addAll(Arrays.asList("set", "list", "reload", "help"));
 		} else {
-			if (args.size() == 2) {
-				if (args.get(0).equalsIgnoreCase("set")) {
-					completeList.add("<player>");
-				}
-			} else if (args.size() == 3){
+			if (args.size() == 3){
 				if (args.get(0).equalsIgnoreCase("set")){
 					completeList.add("<title.name>");
 				}

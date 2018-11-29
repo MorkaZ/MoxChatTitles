@@ -1,6 +1,7 @@
 package com.morkaz.moxchattitles.configuration;
 
-import com.morkaz.moxlibrary.misc.configuration.LocaleConfiguration;
+import com.morkaz.moxlibrary.other.configuration.LocaleConfiguration;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 

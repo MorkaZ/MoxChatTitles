@@ -1,5 +1,7 @@
 package com.morkaz.moxchattitles.data;
 
+import org.bukkit.ChatColor;
+
 public class ChatTitle {
 
 	private String title;
@@ -7,7 +9,9 @@ public class ChatTitle {
 	private String titleIndex;
 
 	public ChatTitle(String title, String titleIndex, String permission) {
-		this.title = title;
+		if (title != null){
+			this.title = ChatColor.translateAlternateColorCodes('&', title);
+		}
 		this.permission = permission;
 		this.titleIndex = titleIndex;
 	}
