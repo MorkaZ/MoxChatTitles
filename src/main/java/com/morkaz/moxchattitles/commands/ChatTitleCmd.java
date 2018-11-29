@@ -25,10 +25,14 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 	}
 
 
-	private void sendHelpMessage(CommandSender sender) {
+	private void sendHelpMessage(CommandSender sender, String alias) {
 		ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 		ServerUtils.sendMessage(sender, " ");
-
+		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" set &3<player> <title> &f- &b"+main.getMessagesConfig().getString("help-outputs.set"));
+		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" remove &3<player> &f- &b"+main.getMessagesConfig().getString("help-outputs.remove"));
+		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" list &f- &b"+main.getMessagesConfig().getString("help-outputs.list"));
+		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" info &3<player> &f- &b"+main.getMessagesConfig().getString("help-outputs.info"));
+		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" reload &f- &b"+main.getMessagesConfig().getString("help-outputs.reload"));
 		ServerUtils.sendMessage(sender, " ");
 		ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 	}
@@ -49,14 +53,35 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 		return completeList;
 	}
 
+
+	/** PERMISSIONS
+	 * mox.chattitles.*
+	 *  mox.chattitles.help
+	 *  mox.chattitles.set
+	 *  mox.chattitles.info
+	 *  mox.chattitles.remove
+	 *  mox.chattitles.list
+	 *  mox.chattitles.reload
+ 	 */
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String alias, String[] argsArray) {
 		List<String> args = Arrays.asList(argsArray);
 		if (args.size() == 0){
-			this.sendHelpMessage(sender);
+			if (!sender.hasPermission("mox.chattitles.help")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("bad-command-usage")
+					.replace("%command%", "&9/"+alias+" &3<args&d[?]&3>")
+				);
+				return true;
+			}
+			this.sendHelpMessage(sender, alias);
 			return true;
 		}
 		if (args.get(0).equalsIgnoreCase("set")){
+			if (!sender.hasPermission("mox.chattitles.set")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
+				return true;
+			}
 			if (args.size() == 1){
 				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.bad-command-usage")
 					.replace("%command%", "&9/"+alias+" "+args.get(0)+" &3<player&d[?]&3> &3<title.name&d[?]&3>")
@@ -87,6 +112,10 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 			);
 			return true;
 		} else if (args.get(0).equalsIgnoreCase("delete") || args.get(0).equalsIgnoreCase("del") || args.get(0).equalsIgnoreCase("remove")){
+			if (!sender.hasPermission("mox.chattitles.remove")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
+				return true;
+			}
 			if (args.size() == 1){
 				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.bad-command-usage")
 						.replace("%command%", "&9/"+alias+" "+args.get(0)+" &3<player&d[?]&3>")
@@ -105,6 +134,10 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 			);
 			return true;
 		} else if (args.get(0).equalsIgnoreCase("list")){
+			if (!sender.hasPermission("mox.chattitles.list")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
+				return true;
+			}
 			Integer pageNumber = 1;
 			if (args.size() == 2){
 				if (NumberUtils.isNumber(args.get(1))){
@@ -137,6 +170,10 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 			ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 			return true;
 		} else if (args.get(0).equalsIgnoreCase("info")){
+			if (!sender.hasPermission("mox.chattitles.info")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
+				return true;
+			}
 			if (args.size() == 1){
 				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.bad-command-usage")
 						.replace("%command%", "&9/"+alias+" "+args.get(0)+" &3<player&d[?]&3>")
@@ -158,11 +195,15 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 			ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 			return true;
 		} else if (args.get(0).equalsIgnoreCase("reload")){
+			if (!sender.hasPermission("mox.chattitles.reload")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
+				return true;
+			}
 			main.reload();
 			ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.plugin-reloaded"));
 			return true;
 		} else {
-			this.sendHelpMessage(sender);
+			this.sendHelpMessage(sender, alias);
 		}
 		return true;
 	}

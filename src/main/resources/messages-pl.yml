@@ -18,3 +18,11 @@ usage-outputs:
   plugin-reloaded: "&bPlugin został zreloadowany!"
   last-title: "&9Ostatni tytuł"
   none: "&cBrak"
+  no-permission: "&cNie masz do tego odpowiednich uprawnień!"
+
+help-outputs:
+  reload: "&bReloaduje plugin (konfiguracja + ponowne załadowanie danych)"
+  set: "&bUstawia tytuł dla podanego gracza."
+  list: "&bPokazuje listę nazw tytułów i ich wyświetlanie się na czacie."
+  remove: "&bUsuwa tytuł graczowi."
+  info: "&bInformacje o tytule gracza."
