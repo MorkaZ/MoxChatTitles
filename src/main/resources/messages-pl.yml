@@ -2,12 +2,29 @@ misc:
   prefix: "&e&l[&9&lChat&b&lTitles&e&l] "
   separator: "&8------&7-----&f----&9*&b&l*&9*&f----&7-----&8------"
 
+gui:
+  gui-title: "       &l>>TWOJE TYTUŁY<<"
+  default-name: "%title%"
+  default-lore: "%selection%"
+  not-selected: "&eKliknij, aby wybrać!"
+  selected: "&2&k!&aAKTUALNIE WYBRANY&2&k!"
+  empty-gui-item-name: "&cNie masz żadnego tytułu :("
+  empty-gui-item-lore: "&3Tytuły możesz nabyć||&3W sklepiku serwera!||&3Wpisz komendę: &9/sklepik"
+  next-page-item-name: "&9>> &3Następna strona &9>>"
+  previous-page-item-name: "&9<< &3Poprzednia strona &9<<"
+  outputs:
+    title-selected: "&bNowy tytuł został wybrany! Sprawdź jak wygląda na czacie! :)"
+    title-already-selected: "&cMasz już wybrany ten tytuł!"
+
 errors:
   bad-command-usage: "&cKomenda została źle użyta, poprawne użycie: %command%"
   nick-too-long: "&cNazwa gracza jest zbyt długa (max 16 znaków)."
   title-not-exist: "&cTen tytuł nie istnieje w configu."
   no-titles-defined: "&cNie zostały skonfigurowane żadne tytuły! Sprawdź konfigurację!"
   no-titles-on-page: "&cNa podanej stronie (&3%page%&c) nie znaleziono żadnych tytułów. Ostatni możliwy do wyświetlenia numer strony to: &3%max-page%&c."
+  command-player-only: "&cKomenda w wpisanej postaci może być użyta tylko z poziomu gracza."
+  player-not-found: "&cPodanego gracza (&3%player%&c) nie ma aktualnie na serwerze."
+  argument-is-not-number: "&cPodany argument liczbowy nie jest liczbą! Sprawdź komendę!"
 
 usage-outputs:
   title-set: "&bTytuł dla gracza &3%player% &bzostał ustawiony na tytuł o nazwie: &3%title%&b."
@@ -26,3 +43,4 @@ help-outputs:
   list: "&bPokazuje listę nazw tytułów i ich wyświetlanie się na czacie."
   remove: "&bUsuwa tytuł graczowi."
   info: "&bInformacje o tytule gracza."
+  gui: "&bOtwiera okienko dla gracza z posiadanymi tytułami"

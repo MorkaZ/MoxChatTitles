@@ -31,7 +31,7 @@ public class ChatListener implements Listener {
 			if (chatFormat.contains("{mox_chattitle}")) {
 				e.setFormat(chatFormat.replace("{mox_chattitle}", chatTitle.getTitle()));
 			} else {
-				e.setFormat(chatTitle.getTitle() + e.getFormat());
+				e.setFormat(chatTitle.getTitle() + " " + e.getFormat());
 			}
 		}
 	}

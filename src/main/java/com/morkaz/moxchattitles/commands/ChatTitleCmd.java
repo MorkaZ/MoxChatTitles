@@ -6,10 +6,12 @@ import com.morkaz.moxchattitles.data.PlayerData;
 import com.morkaz.moxlibrary.api.ServerUtils;
 import com.morkaz.moxlibrary.stuff.Pages;
 import org.apache.commons.lang.math.NumberUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +30,7 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 	private void sendHelpMessage(CommandSender sender, String alias) {
 		ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 		ServerUtils.sendMessage(sender, " ");
+		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" gui &3[player/page] [page] &f- &b"+main.getMessagesConfig().getString("help-outputs.gui"));
 		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" set &3<player> <title> &f- &b"+main.getMessagesConfig().getString("help-outputs.set"));
 		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" remove &3<player> &f- &b"+main.getMessagesConfig().getString("help-outputs.remove"));
 		ServerUtils.sendMessage(sender, " &7- &9/"+alias+" list &f- &b"+main.getMessagesConfig().getString("help-outputs.list"));
@@ -62,6 +65,7 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 	 *  mox.chattitles.remove
 	 *  mox.chattitles.list
 	 *  mox.chattitles.reload
+	 *  mox.chattitles.gui
  	 */
 
 	@Override
@@ -152,7 +156,7 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 			} else if (pageRecords == null){
 				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.no-titles-on-page")
 						.replace("%page%", pageNumber.toString())
-						.replace("%max-page%", pages.getMaxPageNumber().toString())
+						.replace("%max-page%", pages.getLastPageNumber().toString())
 				);
 				return true;
 			}
@@ -185,22 +189,64 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 			ChatTitle chatTitle = playerData.getLastTitle();
 			ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 			ServerUtils.sendMessage(sender, " ");
-			ServerUtils.sendMessage(sender, " "+main.getMessagesConfig().getString("usage-outputs.player-info")+":");
+			ServerUtils.sendMessage(sender, " "+main.getMessagesConfig().getString("usage-outputs.player-info").replace("%player%", args.get(1))+":");
 			if (chatTitle != null){
-				ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("usage-outputs.last-title")+": "+playerData.getLastTitle());
+				ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("usage-outputs.last-title")+": &r"+playerData.getLastTitle().getTitle());
 			} else {
 				ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("usage-outputs.last-title")+": "+main.getMessagesConfig().getString("usage-outputs.none"));
 			}
 			ServerUtils.sendMessage(sender, " ");
 			ServerUtils.sendMessage(sender, main.getMessagesConfig().getString("misc.separator"));
 			return true;
-		} else if (args.get(0).equalsIgnoreCase("reload")){
-			if (!sender.hasPermission("mox.chattitles.reload")){
+		} else if (args.get(0).equalsIgnoreCase("reload")) {
+			if (!sender.hasPermission("mox.chattitles.reload")) {
 				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
 				return true;
 			}
 			main.reload();
 			ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.plugin-reloaded"));
+			return true;
+		} else if (args.get(0).equalsIgnoreCase("gui")){
+			if (!sender.hasPermission("mox.chattitles.gui")){
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("usage-outputs.no-permission"));
+				return true;
+			}
+			Player player;
+			Integer pageNumber = 1;
+			if (args.size() == 1){
+				if (!(sender instanceof Player)){
+					ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.command-player-only"));
+					return true;
+				}
+				player = (Player)sender;
+			} else if (args.size() == 2){
+				if (NumberUtils.isNumber(args.get(1))){
+					if (!(sender instanceof Player)){
+						ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.command-player-only"));
+						return true;
+					}
+					player = (Player)sender;
+					pageNumber = Integer.valueOf(args.get(1));
+				} else {
+					player = Bukkit.getPlayerExact(args.get(1));
+					if (player == null){
+						ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.player-not-found"));
+						return true;
+					}
+				}
+			} else {
+				player = Bukkit.getPlayerExact(args.get(1));
+				if (player == null){
+					ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.player-not-found"));
+					return true;
+				}
+				if (!NumberUtils.isNumber(args.get(2))){
+					ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.argument-is-not-number"));
+					return true;
+				}
+				pageNumber = Integer.valueOf(args.get(1));
+			}
+			main.getGuiManager().openGUI(player, pageNumber);
 			return true;
 		} else {
 			this.sendHelpMessage(sender, alias);

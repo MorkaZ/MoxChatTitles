@@ -6,6 +6,7 @@ import com.morkaz.moxchattitles.listeners.ChatListener;
 import com.morkaz.moxchattitles.listeners.JoinListener;
 import com.morkaz.moxchattitles.listeners.QuitListener;
 import com.morkaz.moxchattitles.managers.DataManager;
+import com.morkaz.moxchattitles.managers.GUIManager;
 import com.morkaz.moxchattitles.misc.Metrics;
 import com.morkaz.moxlibrary.api.QueryUtils;
 import com.morkaz.moxlibrary.api.ServerUtils;
@@ -29,6 +30,7 @@ public class MoxChatTitles extends JavaPlugin {
 	private static MoxChatTitles main;
 	private ConfigManager configManager;
 	private DataManager dataManager;
+	private GUIManager guiManager;
 	private SQLDatabase database;
 	public final String
 			TABLE = "Players",
@@ -79,6 +81,7 @@ public class MoxChatTitles extends JavaPlugin {
 
 		//Initialize Managers
 		dataManager = new DataManager(this);
+		guiManager = new GUIManager(this);
 
 		//Define plugin prefix
 		this.prefix = configManager.getMessagesConfig().getString("misc.prefix");
@@ -116,7 +119,9 @@ public class MoxChatTitles extends JavaPlugin {
 		this.dataManager.reload();
 	}
 
-
+	public GUIManager getGuiManager() {
+		return guiManager;
+	}
 
 	public ConfigManager getConfigManager() {
 		return configManager;

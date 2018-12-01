@@ -6,9 +6,11 @@ import com.morkaz.moxchattitles.data.PlayerData;
 
 import java.util.*;
 
+import com.morkaz.moxlibrary.api.ConfigUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,7 +68,8 @@ public class DataManager{
 		for (String index : indexes.getKeys(false)){
 			String title = main.getConfig().getString("titles."+index+".title");
 			String permission = main.getConfig().getString("titles."+index+".permission");
-			ChatTitle chatTitle = new ChatTitle(title, index, permission);
+			ItemStack guiItemStack = ConfigUtils.loadItemStack(main.getConfig(), "titles."+index+".gui-item", main);
+			ChatTitle chatTitle = new ChatTitle(title, index, permission, guiItemStack);
 			if (title != null){
 				titlesMap.put((index+"").toLowerCase(), chatTitle);
 			} else {
@@ -157,4 +160,15 @@ public class DataManager{
 	public ChatTitle getDefaultTitle() {
 		return defaultTitle;
 	}
+
+	public List<ChatTitle> getOwnedTitles(Player player){
+		List<ChatTitle> chatTitles = new ArrayList<>();
+		for (ChatTitle chatTitle : titlesMap.values()){
+			if (player.hasPermission(chatTitle.getPermission())){
+				chatTitles.add(chatTitle);
+			}
+		}
+		return chatTitles;
+	}
+
 }
