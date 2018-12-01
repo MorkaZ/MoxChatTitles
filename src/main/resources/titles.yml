@@ -1,0 +1,13 @@
+titles:
+
+  example:
+    title: "&e&o[&7Example&8Title&e&o]&r"
+    permission: "example.permission"
+    gui-item:
+      material: "BOOK"
+      data: 0
+      amount: 1
+      name: "%default-name%" #Placeholders: %default-name%, %default-lore% ,%title%, %permission%, %player%, %selection%
+      lore: "%selection%"
+      glow: false
+
