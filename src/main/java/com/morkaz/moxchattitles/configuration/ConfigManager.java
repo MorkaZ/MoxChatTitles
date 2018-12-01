@@ -4,7 +4,6 @@ import com.morkaz.moxchattitles.MoxChatTitles;
 import com.morkaz.moxlibrary.api.ConfigUtils;
 import com.morkaz.moxlibrary.other.configuration.LocaleConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 
 
 
@@ -25,6 +24,11 @@ public class ConfigManager extends LocaleConfiguration {
 
 	public void reloadTitlesConfig(){
 		titlesConfig = ConfigUtils.loadFileConfiguration(main, "titles.yml", false);
+	}
+
+	public void reload(){
+		super.reloadConfiguration();
+		this.reloadTitlesConfig();
 	}
 
 

@@ -54,7 +54,7 @@ public class DataManager{
 		if (!main.getConfig().getBoolean("purger.enabled")){
 			return;
 		}
-		Integer configDays = main.getConfig().getInt("purger.max-not-online-day");
+		Integer configDays = main.getConfig().getInt("purger.max-not-online-days");
 		Long minDate = System.currentTimeMillis() - (86400000L * configDays.longValue()); // (current date) - (max time)
 		// Query
 		String query = "DELETE FROM `"+main.TABLE+"` WHERE `"+main.LAST_LOGIN_COLUMN+"` < "+minDate;
@@ -64,11 +64,11 @@ public class DataManager{
 	public void loadTitles(){
 		this.titlesMap.clear();
 		Bukkit.getLogger().info("["+main.getDescription().getName()+"] Loading chat titles from config..");
-		ConfigurationSection indexes = main.getConfig().getConfigurationSection("titles");
+		ConfigurationSection indexes =  main.getTitlesConfig().getConfigurationSection("titles");
 		for (String index : indexes.getKeys(false)){
-			String title = main.getConfig().getString("titles."+index+".title");
-			String permission = main.getConfig().getString("titles."+index+".permission");
-			ItemStack guiItemStack = ConfigUtils.loadItemStack(main.getConfig(), "titles."+index+".gui-item", main);
+			String title = main.getTitlesConfig().getString("titles."+index+".title");
+			String permission =  main.getTitlesConfig().getString("titles."+index+".permission");
+			ItemStack guiItemStack = ConfigUtils.loadItemStack(main.getTitlesConfig(), "titles."+index+".gui-item", main);
 			ChatTitle chatTitle = new ChatTitle(title, index, permission, guiItemStack);
 			if (title != null){
 				titlesMap.put((index+"").toLowerCase(), chatTitle);

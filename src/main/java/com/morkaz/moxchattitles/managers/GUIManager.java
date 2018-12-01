@@ -8,6 +8,7 @@ import com.morkaz.moxlibrary.api.ServerUtils;
 import com.morkaz.moxlibrary.gui.ActionItem;
 import com.morkaz.moxlibrary.gui.ChestGUI;
 import com.morkaz.moxlibrary.stuff.Pages;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -53,7 +54,7 @@ public class GUIManager {
 							event.setCancelled(true);
 							if (playerData.getLastTitle() == null){
 								if (main.getDataManager().getDefaultTitle() != null){
-									if (main.getDataManager().getDefaultTitle().equals(chatTitle)){
+									if (main.getConfig().getBoolean("default-title.enabled") && main.getDataManager().getDefaultTitle().equals(chatTitle)){
 										ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.title-already-selected"));
 										player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 0.5F, 0.1F);
 										return;
@@ -117,10 +118,8 @@ public class GUIManager {
 	}
 
 	private void generateFillers(ChestGUI chestGUI){
-		//Blue
 		for (int x = 1; x <= 9; x++){
 			for (int y = 1; y <= 6; y++){
-				//Bukkit.broadcastMessage("x:"+x+", y:"+y);
 				if (x != 1 && x != 9 && y != 1 && y != 6){
 					//Body
 					chestGUI.addItem(new ActionItem(x, y, ItemUtils.createItemStack(Material.GRAY_STAINED_GLASS_PANE, 1, main.getPrefix(), null)) {
@@ -164,7 +163,7 @@ public class GUIManager {
 			;
 		} else {
 			if (main.getDataManager().getDefaultTitle() != null){
-				if (main.getDataManager().getDefaultTitle().equals(chatTitle)){
+				if (main.getConfig().getBoolean("default-title.enabled") && main.getDataManager().getDefaultTitle().equals(chatTitle)){
 					text = text
 							.replace("%selection%", main.getMessagesConfig().getString("gui.selected"))
 					;

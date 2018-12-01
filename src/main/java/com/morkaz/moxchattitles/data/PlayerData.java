@@ -52,7 +52,7 @@ public class PlayerData {
 		List<Pair<String, Object>> pairs = new ArrayList<>();
 		pairs.add(Pair.of(main.ID_COLUMN, playerID));
 		pairs.add(Pair.of(main.LAST_LOGIN_COLUMN, lastLogin));
-		pairs.add(Pair.of(main.LAST_TITLE_COLUMN, lastTitle));
+		pairs.add(Pair.of(main.LAST_TITLE_COLUMN, lastTitle.getTitleIndex()));
 		List<String> queries = QueryUtils.constructQueryMultipleValuesSet(
 				main.TABLE,
 				pairs,

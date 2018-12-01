@@ -110,12 +110,16 @@ public class MoxChatTitles extends JavaPlugin {
 
 
 	public void onDisable(){
+
+		//Close connection to unlock database
+		this.database.closeConnection();
+
 		//Ending
 		Bukkit.getLogger().info("["+getDescription().getName()+"] Plugin disabled!");
 	}
 
 	public void reload(){
-		this.configManager.reloadConfiguration();
+		this.configManager.reload();
 		this.dataManager.reload();
 	}
 
@@ -141,6 +145,10 @@ public class MoxChatTitles extends JavaPlugin {
 
 	public static MoxChatTitles getInstance() {
 		return main;
+	}
+
+	public FileConfiguration getTitlesConfig(){
+		return this.configManager.getTitlesConfig();
 	}
 
 	public String getPrefix() {
