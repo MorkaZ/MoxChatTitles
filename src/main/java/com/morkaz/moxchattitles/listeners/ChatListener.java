@@ -18,7 +18,7 @@ public class ChatListener implements Listener {
 		main.getServer().getPluginManager().registerEvents(this, main);
 	}
 
-	@EventHandler(priority= EventPriority.HIGHEST)
+	@EventHandler(priority= EventPriority.MONITOR)
 	public void onChat(AsyncPlayerChatEvent e) {
 		String playerID = main.getDataManager().getPlayerID(e.getPlayer());
 		PlayerData playerData = main.getDataManager().getPlayerData(playerID);
@@ -33,6 +33,8 @@ public class ChatListener implements Listener {
 			} else {
 				e.setFormat(chatTitle.getTitle() + " " + e.getFormat());
 			}
+		} else if (chatFormat.contains("{mox_chattitle}")) {
+			e.setFormat(chatFormat.replace("{mox_chattitle}", ""));
 		}
 	}
 }

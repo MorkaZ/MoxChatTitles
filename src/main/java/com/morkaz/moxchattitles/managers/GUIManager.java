@@ -52,10 +52,16 @@ public class GUIManager {
 						public void onClick(InventoryClickEvent event) {
 							event.setCancelled(true);
 							if (playerData.getLastTitle() == null){
-								if (main.getDataManager().getDefaultTitle().equals(chatTitle)){
-									ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.title-already-selected"));
-									player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 0.5F, 0.1F);
-									return;
+								if (main.getDataManager().getDefaultTitle() != null){
+									if (main.getDataManager().getDefaultTitle().equals(chatTitle)){
+										ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.title-already-selected"));
+										player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 0.5F, 0.1F);
+										return;
+									} else {
+										ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.title-selected"));
+										player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 2.0F, 1.5F);
+										playerData.setLastTitle(chatTitle);
+									}
 								} else {
 									ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.title-selected"));
 									player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 2.0F, 1.5F);
@@ -157,10 +163,16 @@ public class GUIManager {
 					.replace("%selection%", playerData.getLastTitle().equals(chatTitle) ? main.getMessagesConfig().getString("gui.selected") : main.getMessagesConfig().getString("gui.not-selected"))
 			;
 		} else {
-			if (main.getDataManager().getDefaultTitle().equals(chatTitle)){
-				text = text
-						.replace("%selection%", main.getMessagesConfig().getString("gui.selected"))
-				;
+			if (main.getDataManager().getDefaultTitle() != null){
+				if (main.getDataManager().getDefaultTitle().equals(chatTitle)){
+					text = text
+							.replace("%selection%", main.getMessagesConfig().getString("gui.selected"))
+					;
+				} else {
+					text = text
+							.replace("%selection%", main.getMessagesConfig().getString("gui.not-selected"))
+					;
+				}
 			} else {
 				text = text
 						.replace("%selection%", main.getMessagesConfig().getString("gui.not-selected"))

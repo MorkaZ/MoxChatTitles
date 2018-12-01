@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 public class ConfigManager extends LocaleConfiguration {
 
 	public ConfigManager(Plugin plugin) {
-		super(plugin, "pl", "locale");
+		super(plugin, "messages", "pl", "locale");
 	}
 
 }
