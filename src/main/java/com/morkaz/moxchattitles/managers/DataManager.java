@@ -7,6 +7,8 @@ import com.morkaz.moxchattitles.data.PlayerData;
 import java.util.*;
 
 import com.morkaz.moxlibrary.api.ConfigUtils;
+import com.morkaz.moxlibrary.api.QueryUtils;
+import com.morkaz.moxlibrary.database.sql.SQLDatabaseType;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -19,7 +21,7 @@ public class DataManager{
 
 	private MoxChatTitles main;
 	//			Index	Data
-	public Map<String, ChatTitle> titlesMap = new HashMap<>();
+	public Map<String, ChatTitle> titlesMap = new LinkedHashMap<>();
 	//			ID		Data
 	public Map<String, PlayerData> playerDataMap = new HashMap<>();
 	public ChatTitle defaultTitle;
@@ -102,7 +104,20 @@ public class DataManager{
 				ChatTitle lastTitle = getTitle(lastTitleString);
 				if (lastTitle == null){
 					Bukkit.getLogger().info("["+main.getDescription().getName()+"] Last title: \""+lastTitleString+"\" of player: \""+playerID+"\" have not been found in titles configuration.. Player has been removed from last title memory.");
-					resultSet.deleteRow();
+					if (main.getDatabase().getDatabaseType() != SQLDatabaseType.SQLITE){
+						resultSet.deleteRow();
+					} else {
+						List<String> query2 = QueryUtils.constructQuerySingleValueSet(
+								main.TABLE,
+								main.ID_COLUMN,
+								playerID,
+								main.LAST_TITLE_COLUMN,
+								"NULL",
+								true,
+								main.getDatabase().getDatabaseType()
+						);
+						query2.forEach((q) -> main.getDatabase().updateAsync(q));
+					}
 					continue;
 				}
 				if (lastLogin == null){

@@ -142,13 +142,21 @@ public class GUIManager {
 	}
 
 	private ItemStack prepareGUIItemStack(Player player, PlayerData playerData, ChatTitle chatTitle){
-		ItemStack guiItemStack = new ItemStack(chatTitle.getGuiItemStack());
+		ItemStack guiItemStack;
+		if (chatTitle.getGuiItemStack() != null){
+			guiItemStack = new ItemStack(chatTitle.getGuiItemStack());
+		} else {
+			Bukkit.getLogger().warning("[MoxChatTitles] "+"Gui item from chattitle: \""+chatTitle.getTitleIndex()+"\" is null. Probably it has not loaded propetly on plugin start. Fix configuration and do /cht reload.");
+			guiItemStack = new ItemStack(Material.NETHER_STAR, 1);
+		}
 		ItemMeta itemMeta = guiItemStack.getItemMeta();
 		//Prepare name
 		String name = replacePlaceholders(player, playerData, chatTitle, itemMeta.getDisplayName());
-		String lore = replacePlaceholders(player, playerData, chatTitle, String.join("||", itemMeta.getLore()));
 		guiItemStack = ItemUtils.setItemName(guiItemStack, name);
-		guiItemStack = ItemUtils.setItemLore(guiItemStack, lore);
+		if (itemMeta.getLore() != null){
+			String lore = replacePlaceholders(player, playerData, chatTitle, String.join("||", itemMeta.getLore()));
+			guiItemStack = ItemUtils.setItemLore(guiItemStack, lore);
+		}
 		return guiItemStack;
 	}
 
