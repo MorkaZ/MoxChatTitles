@@ -12,8 +12,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -31,11 +33,11 @@ public class GUIManager {
 	public void openGUI(Player player, Integer pageNumber){
 		List<ChatTitle> chatTitles = main.getDataManager().getOwnedTitles(player);
 		Pages<ChatTitle> chatTitlePages = new Pages(chatTitles, 28);
-
 		List<ChatTitle> chatTitlesPage = new ArrayList(chatTitlePages.getObjects(pageNumber) != null ? chatTitlePages.getObjects(pageNumber) : new ArrayList());
 		String playerID = main.getDataManager().getPlayerID(player);
 		PlayerData playerData = main.getDataManager().getPlayerData(playerID);
 		ChestGUI chestGUI = new ChestGUI(main, 6, ChatColor.translateAlternateColorCodes('&', main.getMessagesConfig().getString("gui.gui-title")), true);
+
 		//Generate Fillers
 		generateFillers(chestGUI);
 		//Fill GUI with content
@@ -77,11 +79,12 @@ public class GUIManager {
 								player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 2.0F, 1.5F);
 								playerData.setLastTitle(chatTitle);
 							}
-							player.closeInventory();
+							//player.closeInventory();
 							openGUI(player, pageNumber);
 						}
 					});
 				}
+				// Gdyby były wyczerpane itemki na jakimś y.
 				if (chatTitlesPage.size() <= counter){
 					break;
 				}
@@ -94,12 +97,25 @@ public class GUIManager {
 				}
 			});
 		}
+		// Remove chat title button
+		chestGUI.addItem(new ActionItem(5, 6, ItemUtils.createItemStack(Material.REDSTONE_TORCH, 1, main.getMessagesConfig().getString("gui.remove-title-gui-button-name"), main.getMessagesConfig().getString("gui.remove-title-gui-button-lore"))) {
+			@Override
+			public void onClick(InventoryClickEvent event) {
+				event.setCancelled(true);
+				if (playerData.getLastTitle() == null){
+					ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.no-title-to-clear"));
+				} else {
+					ServerUtils.sendMessage(player, main.getPrefix(), main.getMessagesConfig().getString("gui.outputs.title-cleared"));
+					playerData.setLastTitle(null);
+				}
+			}
+		});
 		if (chatTitlePages.getLastPageNumber() > pageNumber){
 			chestGUI.addItem(new ActionItem(9, 6, ItemUtils.createItemStack(Material.NETHER_STAR, 1, main.getMessagesConfig().getString("gui.next-page-item-name"), null)) {
 				@Override
 				public void onClick(InventoryClickEvent event) {
 					event.setCancelled(true);
-					player.closeInventory();
+					//player.closeInventory();
 					openGUI(player, pageNumber+1);
 				}
 			});
@@ -109,7 +125,7 @@ public class GUIManager {
 				@Override
 				public void onClick(InventoryClickEvent event) {
 					event.setCancelled(true);
-					player.closeInventory();
+					//player.closeInventory();
 					openGUI(player, pageNumber-1);
 				}
 			});

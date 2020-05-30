@@ -10,11 +10,15 @@ gui:
   selected: "&2&k!&aAKTUALNIE WYBRANY&2&k!"
   empty-gui-item-name: "&cNie masz żadnego tytułu :("
   empty-gui-item-lore: "&3Tytuły możesz nabyć||&3W sklepiku serwera!||&3Wpisz komendę: &9/sklepik"
+  remove-title-gui-button-name: "&eWyczyść tytuł z nicku"
+  remove-title-gui-button-lore: "&7Kliknij, aby wyczyścić z czatu||&7aktualny tytuł."
   next-page-item-name: "&9>> &3Następna strona &9>>"
   previous-page-item-name: "&9<< &3Poprzednia strona &9<<"
   outputs:
     title-selected: "&bNowy tytuł został wybrany! Sprawdź jak wygląda na czacie! :)"
     title-already-selected: "&cMasz już wybrany ten tytuł!"
+    title-cleared: "&bAktualnie wybrany tytuł został wyczyszczony z czatu pomyślnie."
+    no-title-to-clear: "&cNie masz ustawionego żadnego tytułu aby go wyczyścić z czatu!"
 
 errors:
   bad-command-usage: "&cKomenda została źle użyta, poprawne użycie: %command%"

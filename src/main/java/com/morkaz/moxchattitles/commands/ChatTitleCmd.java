@@ -73,7 +73,7 @@ public class ChatTitleCmd implements CommandExecutor, TabCompleter {
 		List<String> args = Arrays.asList(argsArray);
 		if (args.size() == 0){
 			if (!sender.hasPermission("mox.chattitles.help")){
-				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("bad-command-usage")
+				ServerUtils.sendMessage(sender, main.getPrefix(), main.getMessagesConfig().getString("errors.bad-command-usage")
 					.replace("%command%", "&9/"+alias+" &3<args&d[?]&3>")
 				);
 				return true;

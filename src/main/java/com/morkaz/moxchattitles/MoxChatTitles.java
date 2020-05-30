@@ -8,18 +8,17 @@ import com.morkaz.moxchattitles.listeners.QuitListener;
 import com.morkaz.moxchattitles.managers.DataManager;
 import com.morkaz.moxchattitles.managers.GUIManager;
 import com.morkaz.moxchattitles.misc.Metrics;
+import com.morkaz.moxchattitles.misc.TitlePlaceholder;
 import com.morkaz.moxlibrary.api.QueryUtils;
 import com.morkaz.moxlibrary.api.ServerUtils;
 import com.morkaz.moxlibrary.database.sql.SQLDatabase;
 import com.morkaz.moxlibrary.database.sql.mysql.MySQLDatabase;
 import com.morkaz.moxlibrary.database.sql.sqlite.SQLiteDatabase;
-
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,6 +102,38 @@ public class MoxChatTitles extends JavaPlugin {
 		new QuitListener(this);
 		new ChatListener(this);
 
+//		if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")){
+//			boolean oldVersion = false;
+//			try {
+//				Class.forName("be.maximvdw.placeholderapi.PlaceholderReplacer");
+//			} catch( ClassNotFoundException e ) {
+//				oldVersion = true;
+//			}
+//			if (oldVersion == false){
+//				PlaceholderAPI.registerPlaceholder(this, "mox_title", new PlaceholderReplacer() {
+//					@Override
+//					public String onPlaceholderReplace(PlaceholderReplaceEvent placeholderReplaceEvent) {
+//						Player player = placeholderReplaceEvent.getPlayer();
+//						PlayerData playerData = MoxChatTitles.getInstance().getDataManager().getPlayerData(MoxChatTitles.getInstance().getDataManager().getPlayerID(player));
+//						if (playerData != null){
+//							if (playerData.getLastTitle() != null){
+//								return playerData.getLastTitle().getTitle();
+//							}
+//						}
+//						Bukkit.getLogger().warning("["+getDescription().getName()+"] Title placeholder \"mox_title\" registered for MVDwPlaceholderAPI!");
+//						return "";
+//
+//					}
+//				});
+//			} else {
+//				Bukkit.getLogger().warning("["+getDescription().getName()+"] You are using old MVdWPlaceholderAPI version! Update it if you want to use placeholders!");
+//			}
+//		}
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+			TitlePlaceholder titlePlaceholder = new TitlePlaceholder();
+			titlePlaceholder.register();
+			Bukkit.getLogger().warning("["+getDescription().getName()+"] Title placeholder \"moxchattitles_title\" registered for PlaceholderAPI!");
+		}
 		//Ending
 		Bukkit.getLogger().info("["+getDescription().getName()+"] Plugin enabled!");
 	}
