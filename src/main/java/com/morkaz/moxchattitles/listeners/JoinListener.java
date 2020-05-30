@@ -1,6 +1,7 @@
 package com.morkaz.moxchattitles.listeners;
 
 import com.morkaz.moxchattitles.MoxChatTitles;
+import com.morkaz.moxchattitles.data.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,7 +21,8 @@ public class JoinListener implements Listener {
 	public void joinListener(PlayerJoinEvent e){
 		String playerID = Bukkit.getOnlineMode() ? e.getPlayer().getUniqueId().toString() : e.getPlayer().getName().toLowerCase();
 		if (!main.getDataManager().isPlayersDataLoaded(playerID)){
-			main.getDataManager().loadPlayerData(e.getPlayer());
+			PlayerData playerData = main.getDataManager().loadPlayerData(e.getPlayer());
+			playerData.setLastLogin(System.currentTimeMillis());
 		}
 	}
 
